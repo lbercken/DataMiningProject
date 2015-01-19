@@ -31,7 +31,6 @@ public class KNN {
         for(int p = 0; p < k; p++){
             Instance best = copy.get(0);
             for(int i = 1; i < copy.size(); i++) {
-                System.out.println("Copy size = " + copy.size());
                 Instance temp = copy.get(i);
                 if(euclideanDistance(toClassify, temp) < euclideanDistance(toClassify, best))
                     best =  temp;
@@ -67,5 +66,9 @@ public class KNN {
             table.put(label, 1 + table.get(label));
         }
         toClassify.setClassification(selectBestLabel(table));
+    }
+    
+    public Instance gettoClassify() {
+        return toClassify;
     }
 }
