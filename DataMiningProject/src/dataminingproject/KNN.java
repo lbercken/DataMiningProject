@@ -6,6 +6,10 @@ import java.util.Hashtable;
 
 public class KNN {
     
+    // Note that the paper explicitly says that
+    // the they used KNN with Manhattan distance metric,
+    // while we use the Euclidean distance.
+    
     private final ArrayList<Instance> dataset;
     private final Instance toClassify;
     private final String[] labels;
@@ -27,7 +31,10 @@ public class KNN {
     
     private ArrayList<Instance> findKNeighbors() {
         ArrayList<Instance> neighbors = new ArrayList<>();
-        ArrayList<Instance> copy = dataset;
+        ArrayList<Instance> copy = new ArrayList<>();
+        for(Instance instance : dataset) {
+            copy.add(new Instance(instance));
+        }
         for(int p = 0; p < k; p++){
             Instance best = copy.get(0);
             for(int i = 1; i < copy.size(); i++) {
@@ -54,7 +61,7 @@ public class KNN {
         return bestLabel;
     }
     
-    public void classify() {
+    public String classify() {
         Hashtable<String, Integer> table = new Hashtable<>();
         ArrayList<Instance> neighbors = findKNeighbors();
         String majorityLabel;
@@ -65,10 +72,6 @@ public class KNN {
             String label = neighbor.getLabel();
             table.put(label, 1 + table.get(label));
         }
-        toClassify.setClassification(selectBestLabel(table));
-    }
-    
-    public Instance gettoClassify() {
-        return toClassify;
+        return selectBestLabel(table);
     }
 }

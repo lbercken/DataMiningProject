@@ -16,6 +16,11 @@ public class Instance {
         label = "";
         features = new ArrayList<>();
     }
+    
+    public Instance(Instance instance) {
+        this.features = instance.features;
+        this.label = instance.label;
+    }
  
     public String getLabel() {
         return label;
