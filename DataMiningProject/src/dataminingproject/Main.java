@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+/**
+ * 
+ * @author Laurens van den Bercken and Jeftha Spunda
+ */
 public class Main {
   
     private static final int totalInstances = 150;
@@ -12,15 +16,25 @@ public class Main {
     private static final int k = 1; // k used for KNN
     private static final int n = 100; // Number of samples
     private static final int m = 3; // Sample size
+    private static final String fileName = "iris_data.txt";
     
+    /**
+     * This is the main. This is were the algorithm is in 4 steps.
+     * @param args
+     * @throws IOException This will throw an IOException when the file is
+     * not found
+     */
     public static void main(String[] args) throws IOException {
-        InstanceReader reader = new InstanceReader("iris_data.txt");
+        InstanceReader reader = new InstanceReader(fileName);
         ArrayList<Instance> instances = reader.read();
-        Collections.shuffle(instances); // the data set was sorted on label, so that is why we shuffle!
+        // We call the function shuffle so that we have random instances in our
+        // train and test set.
+        Collections.shuffle(instances);
         ArrayList<Instance> trainSet = new ArrayList<>();
         ArrayList<Instance> testSet = new ArrayList<>();
         ArrayList<Sample> samples = new ArrayList<>();
-        Random random = new Random(); // needed for selecting random samples
+        // This is needed for selecting random samples
+        Random random = new Random(); 
         
         // Split dataset into train and test set
         // train size = 100; test size = 50;
@@ -49,6 +63,7 @@ public class Main {
         ArrayList<Double> accuracy = new ArrayList<>();
         for(int j = 0; j < n; j++) {
             ArrayList<Instance> copyOfTrainSet = new ArrayList<>();
+            // We need a copy (for every sample) of the training set to compute the accuracy.
             for(Instance instance : trainSet) {
                 copyOfTrainSet.add(new Instance(instance));
             }
@@ -57,14 +72,14 @@ public class Main {
                 String label = knn.classify();
                 copyOfTrainSet.get(i).setClassification(label);
             }
+            // Compute accuracy
             int countAccuracy = 0;
             for(int i = 0; i < trainSet.size(); i++) {
-                if(trainSet.get(i).getLabel().compareTo(copyOfTrainSet.get(i).getLabel()) == 0) {
+                if(trainSet.get(i).getLabel().equals(copyOfTrainSet.get(i).getLabel())) {
                     countAccuracy++;
                 }
             }
             double pushAccuracy = countAccuracy / (double) trainSet.size();
-            
             accuracy.add(pushAccuracy);
         }
         
@@ -82,6 +97,7 @@ public class Main {
         
         // Step 4: Classify test set with best sample
         ArrayList<Instance> copyOfTestSet = new ArrayList<>();
+        // We need a copy again for computing accuracy
         for(Instance instance : testSet) {
             copyOfTestSet.add(new Instance(instance));
         }
@@ -92,7 +108,7 @@ public class Main {
         }
         int countAccuracy = 0;
         for(int i = 0; i < testSet.size(); i++) {
-            if(testSet.get(i).getLabel().compareTo(copyOfTestSet.get(i).getLabel()) == 0) {
+            if(testSet.get(i).getLabel().equals(copyOfTestSet.get(i).getLabel())) {
                 countAccuracy++;
             }
         }
