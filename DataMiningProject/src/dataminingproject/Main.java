@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.Random;
 
 /**
- * 
+ * This is the main of our project
  * @author Laurens van den Bercken and Jeftha Spunda
  */
 public class Main {
@@ -19,8 +19,7 @@ public class Main {
     private static final String fileName = "iris_data.txt";
     
     /**
-     * This is the main. This is were the algorithm is in 4 steps.
-     * @param args
+     * This is the main. This is where the algorithm is in 4 steps.
      * @throws IOException This will throw an IOException when the file is
      * not found
      */
